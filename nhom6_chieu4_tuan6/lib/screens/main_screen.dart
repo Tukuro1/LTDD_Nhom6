@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
-import 'video_screen.dart';  // Import VideoScreen
+import 'video_screen.dart';
 import 'account_screen.dart';
 import 'market_screen.dart';
 
 class MainScreen extends StatefulWidget {
+
   const MainScreen({super.key});
 
   @override
@@ -16,21 +17,11 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<String> _videoAssets = [
     'assets/sample_video.mp4',
-    'assets/sample_video.mp4',
-    'assets/sample_video.mp4',
-    'assets/sample_video.mp4',
+    'assets/sample_video1.mp4',
+    'https://www.youtube.com/watch?v=UmKIIkydLGE',
+    'https://www.youtube.com/watch?v=r-Y7hNfqmAg',
   ];
 
-  // List of screens (you might need to modify this based on your logic)
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    // Modify this to use VideoScreen and pass a video asset
-    const VideoScreen(videoAsset: 'assets/sample_video.mp4'),
-    const AccountScreen(),
-    const MarketScreen(),
-  ];
-
-  // Custom function to change the active and inactive colors for the BottomNavigationBar
   Color _getIconColor(int index) {
     return _currentIndex == index ? Colors.blue : Colors.grey;
   }
@@ -41,16 +32,12 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: const Text('Main Screen'),
       ),
-      body: _screens[_currentIndex],
+      body: _getBody(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
-            if (index == 1) {  // If Video Screen is tapped, set the right video asset
-              // Use a sample asset or a dynamic asset depending on your logic
-              _screens[1] = VideoScreen(videoAsset: _videoAssets[index]);
-            }
           });
         },
         items: [
@@ -78,5 +65,20 @@ class _MainScreenState extends State<MainScreen> {
         elevation: 10,
       ),
     );
+  }
+
+  Widget _getBody() {
+    switch (_currentIndex) {
+      case 0:
+        return const HomeScreen();
+      case 1:
+        return VideoScreen(videoUrl: _videoAssets[0]); // Hoặc sử dụng video từ danh sách.
+      case 2:
+        return const AccountScreen();
+      case 3:
+        return const MarketScreen();
+      default:
+        return const Center(child: Text('Unknown Screen'));
+    }
   }
 }
